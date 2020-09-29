@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { Button } from 'react-native-elements';
+import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { Button, Icon, CheckBox } from 'react-native-elements';
 import Flashlight from 'react-native-torch';
 import { Platform } from 'react-native';
 
@@ -11,7 +11,14 @@ class Write extends React.Component {
         super(props);
         this.state = {
             text: '',
+            muted: false,
+            flash: true,
         };
+    }
+
+    mute(){
+        this.setState({muted: !this.state.muted});
+        console.log(this.state.muted);
     }
 
     async translate(){
@@ -31,7 +38,17 @@ class Write extends React.Component {
         return (
             <View style={styles.container}>
                 <TextInput multiline numberOfLines={4} style={styles.textArea} onChangeText={(text) => this.setState({text})}/>
-                <Button title="Translate" buttonStyle={styles.button} onPress={() => this.translate()}/>
+                <CheckBox Component={TouchableWithoutFeedback}
+                          iconType='octicon'
+                          checkedIcon='mute'
+                          uncheckedIcon='unmute'
+                          uncheckedColor='gray'
+                          checkedColor='gray'
+                          checked={this.state.muted}
+                          onPress={() => this.mute()}
+                          size={30}
+                          style={styles.muteButton}/>
+                <Button title="Translate" buttonStyle={styles.translateButton} onPress={() => this.translate()}/>
             </View>
         );
     }
@@ -51,9 +68,15 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderWidth: 1,
     },
-    button: {
+    muteButton: {
+
+    },
+    flashlightButton: {
+
+    },
+    translateButton: {
         alignSelf: 'flex-end',
-    }
+    },
 });
 
 export default Write;
