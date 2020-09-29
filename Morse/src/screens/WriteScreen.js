@@ -1,14 +1,23 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
-import { Input, Button } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 
-function Write() {
-    return (
-        <View style={styles.container}>
-            <Input style={styles.textArea}/>
-            <Button title="Translate"/>
-        </View>
-    );
+class Write extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            text: '',
+        };
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <TextInput multiline numberOfLines={4} style={styles.textArea} onChangeText={(text) => this.setState({text})}/>
+                <Button title="Translate" buttonStyle={styles.button}/>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -17,11 +26,11 @@ const styles = StyleSheet.create({
         flex: 2,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'gray',
     },
     textArea: {
         backgroundColor: 'white',
-        width: '100%',
+        margin: 10,
+        width: '80%',
         borderColor: 'black',
         borderWidth: 1,
     },
