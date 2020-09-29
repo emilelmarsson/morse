@@ -12,6 +12,8 @@ target 'Morse' do
 
   pod 'react-native-camera', :path => '../node_modules/react-native-camera'
 
+  pod 'react-native-torch', :path => '../node_modules/react-native-torch'
+
   target 'MorseTests' do
     inherit! :complete
     # Pods for testing

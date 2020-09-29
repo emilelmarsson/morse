@@ -12,7 +12,7 @@ const BottomTab = ({navigation}) => {
     <Tab.Navigator
         initialRouteName="Write"
         tabBarOptions={{
-            activeTintColor: '#03befc',
+            activeTintColor: '#2089dc',
             labelStyle: {fontSize: 15},
             style: {height: 60}
         }}
