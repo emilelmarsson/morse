@@ -1,4 +1,4 @@
-package com.morse;
+package com.morsekod;
 
 import android.app.Application;
 import android.content.Context;

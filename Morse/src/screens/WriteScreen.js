@@ -2,6 +2,8 @@ import * as React from 'react';
 import { StyleSheet, Text, View, TextInput } from 'react-native';
 import { Button } from 'react-native-elements';
 
+const morse = require('morse');
+
 class Write extends React.Component {
     constructor(props){
         super(props);
@@ -10,11 +12,15 @@ class Write extends React.Component {
         };
     }
 
+    translate(){
+        console.log(morse.encode(this.state.text));
+    }
+
     render() {
         return (
             <View style={styles.container}>
                 <TextInput multiline numberOfLines={4} style={styles.textArea} onChangeText={(text) => this.setState({text})}/>
-                <Button title="Translate" buttonStyle={styles.button}/>
+                <Button title="Translate" buttonStyle={styles.button} onPress={() => this.translate()}/>
             </View>
         );
     }

@@ -135,7 +135,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.morse"
+        applicationId "com.morsekod"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
