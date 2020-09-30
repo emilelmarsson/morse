@@ -12,6 +12,8 @@
     "node": "^14.12.0",
     "react": "^16.13.1",
     "react-native": "^0.63.2",
+    "react-native-a-beep": "^1.0.6",
+    "react-native-beep-tone": "^1.0.2",
     "react-native-camera": "git+https://git@github.com/react-native-community/react-native-camera.git",
     "react-native-cli": "^2.0.1",
     "react-native-elements": "^2.3.2",

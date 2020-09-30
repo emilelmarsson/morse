@@ -8,6 +8,7 @@ android {
         applicationId "com.example.abc.test"
         minSdkVersion 21
         targetSdkVersion 27
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -18,6 +19,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+}
+
+dependencies {
+    implementation project(':react-native-beep-tone')
+    implementation 'com.android.support:multidex:1.0.3'
 }
 
 buildscript {

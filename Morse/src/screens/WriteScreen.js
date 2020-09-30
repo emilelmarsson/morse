@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { Button, Icon, CheckBox } from 'react-native-elements';
-import Flashlight from 'react-native-torch';
 import { Platform } from 'react-native';
+import Flashlight from 'react-native-torch';
+import {start, stop} from 'react-native-beep-tone';
 
 const morse = require('morse');
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class Write extends React.Component {
     constructor(props){
@@ -13,6 +15,7 @@ class Write extends React.Component {
             text: '',
             muted: false,
             flash: true,
+            translating: false,
         };
     }
 
@@ -22,16 +25,69 @@ class Write extends React.Component {
     }
 
     async translate(){
-        console.log(morse.encode(this.state.text));
+        if(this.state.translating)
+            return;
+        this.setState({translating: true});
+
+        // Splitting on spaces into words
+        var morseCode = morse.encode(this.state.text).split(' ....... ');
+        // Splitting into characters within words
+        for(var i=0; i<morseCode.length; i++){
+            morseCode[i] = morseCode[i].split(' ');
+        }
+
+        // Morse code constants
+        const SHORT_SIGNAL = 1,
+              LONG_SIGNAL = 3,
+              INTRACHARACTER_PAUSE = 1,
+              INTRAWORD_PAUSE = 3,
+              INTERWORD_PAUSE = 7,
+              UNIT = 100;
+
+        console.log(morseCode);
 
         const cameraAllowed = await Flashlight.requestCameraPermission(
             'Camera Permissions', // dialog title
             'We require camera permissions to use the torch on the back of your phone.' // dialog body
         );
 
-        if (cameraAllowed) {
-            Flashlight.switchState(true);
+        if (cameraAllowed && (this.state.flash || !this.state.muted)) {
+            for(var i=0; i<morseCode.length; i++){
+
+                for(var j=0; j<morseCode[i].length; j++){
+                    var length = morseCode[i][j] == '.' ? 1 : 3;
+
+                    for(var k=0; k<morseCode[i][j].length; k++){
+                        var length = morseCode[i][j][k] == '.' ? 1 : 3;
+
+                        if(this.state.flash)
+                            Flashlight.switchState(true);
+                        if(!this.state.muted)
+                            start(100);
+
+                        await delay(UNIT * length);
+
+                        if(this.state.flash)
+                            Flashlight.switchState(false);
+                        if(!this.state.muted)
+                            stop();
+
+                        if(k < morseCode[i][j].length - 1)
+                            await delay(UNIT);
+                    }
+
+                    if(j < morseCode[i].length - 1)
+                        await delay(UNIT * 3);
+                }
+
+                if(i < morseCode.length - 1)
+                    await delay(UNIT * 7);
+            }
         }
+
+        Flashlight.switchState(false);
+        stop();
+        this.setState({translating: false});
     }
 
     render() {
@@ -52,6 +108,7 @@ class Write extends React.Component {
                                   checkedColor='gray'
                                   checked={this.state.muted}
                                   onPress={() => this.mute()}
+                                  disabled={this.state.translating}
                                   size={30}
                                   style={styles.muteButton}/>
                         <CheckBox Component={TouchableWithoutFeedback}
@@ -62,10 +119,14 @@ class Write extends React.Component {
                                   checkedColor='gray'
                                   checked={!this.state.flash}
                                   onPress={() => this.setState({flash: !this.state.flash})}
+                                  disabled={this.state.translating}
                                   size={30}
                                   style={styles.flashlightButton}/>
                     </View>
-                    <Button title="Translate" buttonStyle={styles.translateButton} onPress={() => this.translate()}/>
+                    <Button title="Translate"
+                            buttonStyle={styles.translateButton}
+                            onPress={() => this.translate()}
+                            disabled={this.state.translating}/>
                 </View>
             </View>
         );
@@ -76,7 +137,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         flex: 2,
-        top: '40%',
+        top: '3%',
         alignItems: 'center',
     },
     title: {

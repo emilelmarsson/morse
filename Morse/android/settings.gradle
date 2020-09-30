@@ -1,4 +1,6 @@
 rootProject.name = 'Morse'
+include ':react-native-beep-tone'
+project(':react-native-beep-tone').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-beep-tone/android')
 include ':react-native-torch'
 project(':react-native-torch').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-torch/android')
 include ':react-native-camera'
