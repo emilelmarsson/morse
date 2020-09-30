@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback } from 'rea
 import { Button, Icon, CheckBox } from 'react-native-elements';
 import { Platform, Keyboard } from 'react-native';
 import Flashlight from 'react-native-torch';
-import RNTone from 'react-native-tone';
+import {start, stop} from 'react-native-beep-tone';
 
 const morse = require('morse');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -17,7 +17,6 @@ class Write extends React.Component {
             flash: true,
             translating: false,
         };
-        RNTone.initWithChannels(1, 0.25),
     }
 
     mute(){
@@ -65,14 +64,14 @@ class Write extends React.Component {
                         if(this.state.flash)
                             Flashlight.switchState(true);
                         if(!this.state.muted)
-                            RNTone.play();
+                            start(75);
 
                         await delay(UNIT * length);
 
                         if(this.state.flash)
                             Flashlight.switchState(false);
                         if(!this.state.muted)
-                            RNTone.stop();
+                            stop();
 
                         if(k < morseCode[i][j].length - 1)
                             await delay(UNIT);
@@ -89,7 +88,7 @@ class Write extends React.Component {
         }
 
         Flashlight.switchState(false);
-        RNTone.stop();
+        stop();
         this.setState({translating: false});
     }
 
