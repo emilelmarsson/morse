@@ -130,7 +130,8 @@ class Write extends React.Component {
                     <Button title="Translate"
                             buttonStyle={styles.translateButton}
                             onPress={() => this.translate()}
-                            disabled={this.state.translating}/>
+                            disabled={this.state.translating}
+                            loading={this.state.translating}/>
                 </View>
             </View>
         );
@@ -171,6 +172,7 @@ const styles = StyleSheet.create({
     },
     translateButton: {
         alignSelf: 'flex-end',
+        width: 100,
     },
 });
 
