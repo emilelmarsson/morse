@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { Button, Icon, CheckBox } from 'react-native-elements';
-import { Platform } from 'react-native';
+import { Platform, Keyboard } from 'react-native';
 import Flashlight from 'react-native-torch';
 import {start, stop} from 'react-native-beep-tone';
 
@@ -27,6 +27,7 @@ class Write extends React.Component {
     async translate(){
         if(this.state.translating)
             return;
+        Keyboard.dismiss();
         this.setState({translating: true});
 
         // Splitting on spaces into words
@@ -97,7 +98,8 @@ class Write extends React.Component {
                            multiline
                            numberOfLines={9}
                            style={styles.textArea}
-                           onChangeText={(text) => this.setState({text})}/>
+                           onChangeText={(text) => this.setState({text})}
+                           editable={!this.state.translating}/>
                 <View style={styles.togglables}>
                     <View style={styles.controllers}>
                         <CheckBox Component={TouchableWithoutFeedback}
@@ -126,7 +128,8 @@ class Write extends React.Component {
                     <Button title="Translate"
                             buttonStyle={styles.translateButton}
                             onPress={() => this.translate()}
-                            disabled={this.state.translating}/>
+                            disabled={this.state.translating}
+                            loading={this.state.translating}/>
                 </View>
             </View>
         );
@@ -167,6 +170,7 @@ const styles = StyleSheet.create({
     },
     translateButton: {
         alignSelf: 'flex-end',
+        width: 100,
     },
 });
 
