@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
         width: '80%',
         borderColor: 'black',
         borderWidth: 1,
-        textAlignVertical: 'top'
+        textAlignVertical: 'top',
+        borderRadius: 5
     },
     togglables: {
         flexDirection: 'row',
