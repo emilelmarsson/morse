@@ -37,18 +37,36 @@ class Write extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <TextInput multiline numberOfLines={4} style={styles.textArea} onChangeText={(text) => this.setState({text})}/>
-                <CheckBox Component={TouchableWithoutFeedback}
-                          iconType='octicon'
-                          checkedIcon='mute'
-                          uncheckedIcon='unmute'
-                          uncheckedColor='gray'
-                          checkedColor='gray'
-                          checked={this.state.muted}
-                          onPress={() => this.mute()}
-                          size={30}
-                          style={styles.muteButton}/>
-                <Button title="Translate" buttonStyle={styles.translateButton} onPress={() => this.translate()}/>
+                <TextInput placeholder="Enter text to be translated into morse code..."
+                           multiline
+                           numberOfLines={9}
+                           style={styles.textArea}
+                           onChangeText={(text) => this.setState({text})}/>
+                <View style={styles.togglables}>
+                    <View style={styles.controllers}>
+                        <CheckBox Component={TouchableWithoutFeedback}
+                                  iconType='octicon'
+                                  checkedIcon='mute'
+                                  uncheckedIcon='unmute'
+                                  uncheckedColor='gray'
+                                  checkedColor='gray'
+                                  checked={this.state.muted}
+                                  onPress={() => this.mute()}
+                                  size={30}
+                                  style={styles.muteButton}/>
+                        <CheckBox Component={TouchableWithoutFeedback}
+                                  iconType='material-community'
+                                  checkedIcon='lightbulb-off-outline'
+                                  uncheckedIcon='lightbulb-outline'
+                                  uncheckedColor='gray'
+                                  checkedColor='gray'
+                                  checked={!this.state.flash}
+                                  onPress={() => this.setState({flash: !this.state.flash})}
+                                  size={30}
+                                  style={styles.flashlightButton}/>
+                    </View>
+                    <Button title="Translate" buttonStyle={styles.translateButton} onPress={() => this.translate()}/>
+                </View>
             </View>
         );
     }
@@ -58,8 +76,11 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'column',
         flex: 2,
-        justifyContent: 'center',
+        top: '40%',
         alignItems: 'center',
+    },
+    title: {
+        color: 'gray',
     },
     textArea: {
         backgroundColor: 'white',
@@ -67,6 +88,15 @@ const styles = StyleSheet.create({
         width: '80%',
         borderColor: 'black',
         borderWidth: 1,
+        textAlignVertical: 'top'
+    },
+    togglables: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '80%',
+    },
+    controllers: {
+        flexDirection: 'row',
     },
     muteButton: {
 
