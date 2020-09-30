@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { Button, Icon, CheckBox } from 'react-native-elements';
-import { Platform } from 'react-native';
+import { Platform, Keyboard } from 'react-native';
 import Flashlight from 'react-native-torch';
-import {start, stop} from 'react-native-beep-tone';
+import RNTone from 'react-native-tone';
 
 const morse = require('morse');
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -17,6 +17,7 @@ class Write extends React.Component {
             flash: true,
             translating: false,
         };
+        RNTone.initWithChannels(1, 0.25),
     }
 
     mute(){
@@ -27,6 +28,7 @@ class Write extends React.Component {
     async translate(){
         if(this.state.translating)
             return;
+        Keyboard.dismiss();
         this.setState({translating: true});
 
         // Splitting on spaces into words
@@ -63,14 +65,14 @@ class Write extends React.Component {
                         if(this.state.flash)
                             Flashlight.switchState(true);
                         if(!this.state.muted)
-                            start(100);
+                            RNTone.play();
 
                         await delay(UNIT * length);
 
                         if(this.state.flash)
                             Flashlight.switchState(false);
                         if(!this.state.muted)
-                            stop();
+                            RNTone.stop();
 
                         if(k < morseCode[i][j].length - 1)
                             await delay(UNIT);
@@ -80,13 +82,14 @@ class Write extends React.Component {
                         await delay(UNIT * 3);
                 }
 
+                console.log("New word");
                 if(i < morseCode.length - 1)
                     await delay(UNIT * 7);
             }
         }
 
         Flashlight.switchState(false);
-        stop();
+        RNTone.stop();
         this.setState({translating: false});
     }
 
@@ -97,7 +100,8 @@ class Write extends React.Component {
                            multiline
                            numberOfLines={9}
                            style={styles.textArea}
-                           onChangeText={(text) => this.setState({text})}/>
+                           onChangeText={(text) => this.setState({text})}
+                           editable={!this.state.translating}/>
                 <View style={styles.togglables}>
                     <View style={styles.controllers}>
                         <CheckBox Component={TouchableWithoutFeedback}

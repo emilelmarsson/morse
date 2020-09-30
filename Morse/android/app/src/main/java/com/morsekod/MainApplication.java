@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
-import com.feelrobotics.beeptone.RNBeepTonePackage;
+import com.reactlibrary.RNTonePackage;
 import com.cubicphuse.RCTTorch.RCTTorchPackage;
 import org.reactnative.camera.RNCameraPackage;
 import org.reactnative.camera.RNCameraPackage;

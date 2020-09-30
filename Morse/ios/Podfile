@@ -14,7 +14,8 @@ target 'Morse' do
 
   pod 'react-native-torch', :path => '../node_modules/react-native-torch'
 
-  pod 'RNBeepTone', :path => '../node_modules/react-native-beep-tone'
+
+  pod 'RNTone', :path => '../node_modules/react-native-tone'
 
   target 'MorseTests' do
     inherit! :complete
